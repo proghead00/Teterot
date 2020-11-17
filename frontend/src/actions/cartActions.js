@@ -1,5 +1,5 @@
 import axios from "axios"; // when we add an item to the cart, we need to make request to api/products/:id to get the data for the particular product to add to the cart
-import { CART_ADD_ITEM } from "../constants/cartConstants";
+import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
 
 export const addToCart = (id, qty) => async (dispatch, getState) => {
 	// used thunk -> hence async(dispatch)
@@ -17,5 +17,13 @@ export const addToCart = (id, qty) => async (dispatch, getState) => {
 		},
 	});
 
-	localStorage.setItem("cartItems", JSON.stringify(getState.cartItems));
+	localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+};
+
+export const removeFromCart = (id) => (dispatch, getState) => {
+	dispatch({
+		type: CART_REMOVE_ITEM,
+		payload: id,
+	});
+	localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
