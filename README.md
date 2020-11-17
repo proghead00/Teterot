@@ -1,6 +1,5 @@
 # Teterot
-## A MERN stack e-commerce project
----
+## A MERN stack e-commerce project 🛒
 
 ## Features (including the ones to be added):
 
