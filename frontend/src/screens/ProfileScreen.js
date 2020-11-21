@@ -3,7 +3,7 @@ import { Form, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
-import { getUserDetails } from "../actions/userActions";
+import { getUserDetails, updateUserProfile } from "../actions/userActions";
 
 const ProfileScreen = ({ location, history }) => {
 	const [name, setName] = useState("");
@@ -19,6 +19,9 @@ const ProfileScreen = ({ location, history }) => {
 
 	const userLogin = useSelector((state) => state.userLogin); // get userLogin from the state
 	const { userInfo } = userLogin; // refrence -> userReducers.js
+
+	const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+	const { success } = userUpdateProfile;
 
 	useEffect(() => {
 		// if user is not logged in -> then redirect to /login
@@ -42,6 +45,7 @@ const ProfileScreen = ({ location, history }) => {
 			setMessage("Passwords do not match");
 		} else {
 			//dispatch the updated profile
+			dispatch(updateUserProfile({ id: user._id, name, email, password }));
 		}
 	};
 
@@ -52,6 +56,8 @@ const ProfileScreen = ({ location, history }) => {
 				{message && <Message variant="danger">{message}</Message>}
 
 				{error && <Message variant="danger">{error}</Message>}
+				{success && <Message variant="success">Profile updated</Message>}
+
 				{loading && <Loader />}
 
 				<Form onSubmit={submitHandler}>

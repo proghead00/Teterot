@@ -9,6 +9,9 @@ import {
 	USER_REGISTER_FAIL,
 	USER_REGISTER_REQUEST,
 	USER_REGISTER_SUCCESS,
+	USER_UPDATE_PROFILE_REQUEST,
+	USER_UPDATE_PROFILE_SUCCESS,
+	USER_UPDATE_PROFILE_FAIL,
 } from "../constants/userConstants";
 import axios from "axios";
 
@@ -121,6 +124,43 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 	} catch (error) {
 		dispatch({
 			type: USER_DETAILS_FAIL,
+			payload:
+				error.response && error.response.data.message
+					? error.response.data.message
+					: error.message,
+		});
+	}
+};
+
+export const updateUserProfile = (user) => async (dispatch, getState) => {
+	// getState is required because token is needed to be sent
+	try {
+		dispatch({
+			type: USER_UPDATE_PROFILE_REQUEST,
+		});
+
+		const {
+			userLogin: { userInfo },
+		} = getState(); // userInfo is in userLogin
+
+		const config = {
+			headers: {
+				"Content-Type": "application/json",
+
+				//pass token
+				Authorization: `Bearer ${userInfo.token}`,
+			},
+		};
+
+		const { data } = await axios.put(`/api/users/profile`, user, config);
+
+		dispatch({
+			type: USER_UPDATE_PROFILE_SUCCESS,
+			payload: data,
+		});
+	} catch (error) {
+		dispatch({
+			type: USER_UPDATE_PROFILE_FAIL,
 			payload:
 				error.response && error.response.data.message
 					? error.response.data.message
