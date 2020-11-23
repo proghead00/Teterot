@@ -18,6 +18,7 @@ const PlaceOrderScreen = ({ history }) => {
 	} else if (!cart.paymentMethod) {
 		history.push("/payment");
 	}
+
 	//   Calculate prices
 	const addDecimals = (num) => {
 		return (Math.round(num * 100) / 100).toFixed(2);
@@ -26,6 +27,7 @@ const PlaceOrderScreen = ({ history }) => {
 	cart.itemsPrice = addDecimals(
 		cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
 	);
+
 	cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100);
 	cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)));
 	cart.totalPrice = (
@@ -61,14 +63,14 @@ const PlaceOrderScreen = ({ history }) => {
 	};
 
 	return (
-		<>
+		<div>
 			<CheckoutSteps step1 step2 step3 step4 />
 			<Row>
 				<Col md={8}>
 					<ListGroup variant="flush">
 						<ListGroup.Item>
 							<h2>Shipping</h2>
-							<p>
+							<p style={{ fontFamily: "Archivo" }}>
 								<strong>Address:</strong>
 								{cart.shippingAddress.address}, {cart.shippingAddress.city}{" "}
 								{cart.shippingAddress.postalCode},{" "}
@@ -119,7 +121,7 @@ const PlaceOrderScreen = ({ history }) => {
 					<Card>
 						<ListGroup variant="flush">
 							<ListGroup.Item>
-								<h2>Order Summary</h2>
+								<h2>Order summary</h2>
 							</ListGroup.Item>
 							<ListGroup.Item>
 								<Row>
@@ -155,14 +157,14 @@ const PlaceOrderScreen = ({ history }) => {
 									disabled={cart.cartItems === 0}
 									onClick={placeOrderHandler}
 								>
-									Place Order
+									Place order
 								</Button>
 							</ListGroup.Item>
 						</ListGroup>
 					</Card>
 				</Col>
 			</Row>
-		</>
+		</div>
 	);
 };
 
