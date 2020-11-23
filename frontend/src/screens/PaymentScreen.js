@@ -9,32 +9,28 @@ const PaymentScreen = ({ history }) => {
 	const cart = useSelector((state) => state.cart);
 	const { shippingAddress } = cart;
 
-	if (!shippingAddress) {
+	if (!shippingAddress.address) {
 		history.push("/shipping");
 	}
 
-	// default payment method
 	const [paymentMethod, setPaymentMethod] = useState("PayPal");
 
 	const dispatch = useDispatch();
 
 	const submitHandler = (e) => {
 		e.preventDefault();
-		dispatch(savePaymentMethod({ paymentMethod }));
-		history.push("/placeorder"); // moving to the next page
+		dispatch(savePaymentMethod(paymentMethod));
+		history.push("/placeorder");
 	};
 
 	return (
 		<FormContainer>
 			<CheckoutSteps step1 step2 step3 />
-			<h1> Payment method </h1>
-
+			<h1>Payment Method</h1>
 			<Form onSubmit={submitHandler}>
 				<Form.Group>
-					<Form.Label as="legend">Select method</Form.Label>
-
+					<Form.Label as="legend">Select Method</Form.Label>
 					<Col>
-						{/* PAYMENT METHODS */}
 						<Form.Check
 							type="radio"
 							label="PayPal or Credit Card"
@@ -44,16 +40,14 @@ const PaymentScreen = ({ history }) => {
 							checked
 							onChange={(e) => setPaymentMethod(e.target.value)}
 						></Form.Check>
-
 						{/* <Form.Check
-							type="radio"
-							label="Stripe"
-							id="Stripe"
-							name="paymentMethod"
-							value="Stripe"
-							checked
-							onChange={(e) => setPaymentMethod(e.target.value)}
-						></Form.Check> */}
+              type='radio'
+              label='Stripe'
+              id='Stripe'
+              name='paymentMethod'
+              value='Stripe'
+              onChange={(e) => setPaymentMethod(e.target.value)}
+            ></Form.Check> */}
 					</Col>
 				</Form.Group>
 
